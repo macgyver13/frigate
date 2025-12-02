@@ -25,6 +25,7 @@ public class Config {
     private List<String> readDbUrls;
     private boolean useCuda;
     private int cudaBatchSize = 300000;
+    private int maxLabelsToScan = 100;
     private Server backendElectrumServer;
 
     private static Config INSTANCE;
@@ -176,6 +177,15 @@ public class Config {
 
     public void setCudaBatchSize(int cudaBatchSize) {
         this.cudaBatchSize = cudaBatchSize;
+        flush();
+    }
+
+    public int getMaxLabelsToScan() {
+        return maxLabelsToScan;
+    }
+
+    public void setMaxLabelsToScan(int maxLabelsToScan) {
+        this.maxLabelsToScan = maxLabelsToScan;
         flush();
     }
 

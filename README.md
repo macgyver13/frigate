@@ -290,6 +290,7 @@ An example configuration looks as follows
   "scriptPubKeyCacheSize": 10000000,
   "useCuda": false,
   "cudaBatchSize": 300000,
+  "maxLabelsToScan": 100,
   "backendElectrumServer": "tcp://localhost:50001"
 }
 ```
@@ -304,6 +305,8 @@ To improve performance, scriptPubKeys are cached to avoid looking them up again 
 The `scriptPubKeyCacheSize` limits the number of scriptPubKeys cached during indexing. 
 The default value leads to a total application memory size of around 4Gb. 
 This value can be increased or decreased depending on available RAM. 
+
+The `maxLabelsToScan` setting limits the maximum number of silent payment labels (including change) that can be scanned per subscription. This prevents resource exhaustion from excessive label requests. Default is 100.
 
 The DuckDB database is stored in a `db` subfolder in the same directory, in a file called `frigate.duckdb`.
 DuckDB databases can be transferred between different operating systems, and should survive unclean shutdowns.

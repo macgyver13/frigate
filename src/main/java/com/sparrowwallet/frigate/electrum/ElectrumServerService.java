@@ -15,6 +15,7 @@ import com.sparrowwallet.frigate.Frigate;
 import com.sparrowwallet.frigate.bitcoind.*;
 import com.sparrowwallet.frigate.index.IndexQuerier;
 import com.sparrowwallet.frigate.index.TxEntry;
+import com.sparrowwallet.frigate.io.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -490,7 +491,12 @@ public class ElectrumServerService {
         Set<Integer> labelSet = new HashSet<>();
         labelSet.add(0);
         if(labels != null) {
-            labelSet.addAll(Arrays.stream(labels).filter(Objects::nonNull).filter(integer -> integer.compareTo(0) > 0).collect(Collectors.toSet()));
+            Set<Integer> userLabels = Arrays.stream(labels).filter(Objects::nonNull).filter(integer -> integer.compareTo(0) > 0).collect(Collectors.toSet());
+            int maxLabelsToScan = Config.get().getMaxLabelsToScan();
+            if(userLabels.size() > maxLabelsToScan) {
+                throw new IllegalArgumentException("Label count " + userLabels.size() + " exceeds maximum of " + maxLabelsToScan);
+            }
+            labelSet.addAll(userLabels);
         }
         return Collections.unmodifiableSet(labelSet);
     }
